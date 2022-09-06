@@ -11,9 +11,9 @@ import { styles } from "./styles"
  * @returns Node
  */
 export const FutureDetailEntry = ({day}) => {
-  const currentIcon = useFetchIcon(day.weather[0].icon)
+  const currentIcon = useFetchIcon(day?.weather[0]?.icon ?? "")
   const currenthumidity = `Humedad ${Math.round(day?.main?.humidity)}%`
-  const currentDescription = `${day?.weather[0].description.charAt(0).toUpperCase() + day?.weather[0].description.slice(1)}`
+  const currentDescription = `${day?.weather[0]?.description?.charAt(0).toUpperCase() + day?.weather[0]?.description.slice(1)}`
   const currentTemperature = `Temperatura: ${Math.round(day?.main?.temp -273.15)}°`
 
   return (

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Proyectos\\Programacion\\TelecomChallenge\\telecom_challenge\\Telecom-Challenge\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-te\\values-te.xml",
+            "outputFile": "C:\\Users\\SrGrimm\\Desktop\\test git\\Telecom-Challenge\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-te\\values-te.xml",
             "map": [
                 {
                     "source": "C:\\Users\\SrGrimm\\.gradle\\caches\\transforms-3\\efc5fbdc5cddabff1e6dbe6ad771c56d\\transformed\\core-1.7.0\\res\\values-te\\values-te.xml",

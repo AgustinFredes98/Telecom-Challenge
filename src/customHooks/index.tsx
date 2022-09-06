@@ -61,15 +61,29 @@ export const useGetCurrentinformationByIP = () => {
   useEffect(() => {
     publicIP()
       .then(ip => {    
-        return fetch(`http://ip-api.com/json/${ip}`)
+        fetch(`http://ip-api.com/json/${ip}`)
         .then((response) => response.json())
         .then((data) => {
-            return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
+          if (data.lat && data.lon) {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
-              dispatch(setCurrentInformation({[`${data.name}-${data.sys.country}`]: data}));
-              dispatch(setlocalPlace(`${data.name}-${data.sys.country}`))
+              if (data.name) {
+                dispatch(setCurrentInformation({[`${data?.name}-${data?.sys?.country ?? data?.name}`]: data}));
+                dispatch(setlocalPlace(`${data?.name}-${data?.sys?.country ?? data?.name}`))
+              } else if (data.cod === 401) {
+                throw new Error("Invalid API key");
+              } else {
+                throw new Error("Something happend with the backEnd");
+              }
             })
+            .catch((error) => {
+              console.error(error);
+            });
+          }
+          else {
+            throw new Error("Api is not responding with latitude");
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -91,8 +105,14 @@ export const useGetinformationByQueryParams = (params:getInformationParams) => {
             fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
-              dispatch(setFutureInformation({[`${data.city.name}-${data.city.country}`]: data.list}));
-              setCurrentName(`${data.city.name}-${data.city.country}`)
+              if (data.city) {
+                dispatch(setFutureInformation({[`${data?.city?.name}-${data?.city?.country ?? data?.city?.name}`]: data.list}));
+                setCurrentName(`${data?.city?.name}-${data?.city?.country ?? data?.city?.name}`)
+              } else if (data.cod === 401) {
+                throw new Error("Invalid API key");
+              } else {
+                throw new Error("Something happend with the backEnd");
+              }
             })
             .catch((error) => {
               console.error(error);
@@ -101,17 +121,23 @@ export const useGetinformationByQueryParams = (params:getInformationParams) => {
             fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
-              const listSplittedBy24Hs = data.list.filter((item) => {
-                return data.list[0].dt_txt?.split(" ")[1] === item?.dt_txt?.split(" ")[1]
-              })
-              dispatch(setFutureInformation({[`${data.city.name}-${data.city.country}`]: listSplittedBy24Hs}));
-              setCurrentName(`${data.city.name}-${data.city.country}`)
+              if (data.list) {
+                const listSplittedBy24Hs = data.list.filter((item) => {
+                  return data.list[0].dt_txt?.split(" ")[1] === item?.dt_txt?.split(" ")[1]
+                })
+                dispatch(setFutureInformation({[`${data?.city?.name}-${data?.city?.country ?? data?.city?.name}`]: listSplittedBy24Hs}));
+                setCurrentName(`${data?.city?.name}-${data?.city?.country ?? data?.city?.name}`)
+              } else if (data.cod === 401) {
+                throw new Error("Invalid API key");
+              } else {
+                throw new Error("Something happend with the backEnd");
+              }
             })
             .catch((error) => {
               console.error(error);
             });
           } else {
-            throw new Error("Api is not responding with latitude");
+            throw new Error("Api is not responding with latitude nor longitude");
           }
         })
         .catch((error) => {
