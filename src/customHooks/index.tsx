@@ -4,11 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigate, useParams } from "react-router-native";
 import { useAppDispatch } from "../redux/hooks";
 import publicIP from "react-native-public-ip";
-import { WEATHER_MAP_API_KEY }  from "react-native-dotenv"
 import { setCurrentInformation, setFutureInformation, setlocalPlace } from "../redux/placeSlice"
 import { getInformationParams } from "../types"
 
-const api_key = WEATHER_MAP_API_KEY // dotenv is not working as expected so this line fixes that
+const api_key = "6c5dcdad7c41b67f6b171ea0ea2bbfc9" // dotenv is not working as expected so this line fixes that
 
 export const useBackHome = () => {
   const navigate = useNavigate()

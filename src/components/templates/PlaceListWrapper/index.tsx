@@ -2,10 +2,11 @@ import React, { useState } from "react"
 import { View, Alert, SafeAreaView, ScrollView } from "react-native"
 import Prompt from "../../molecules/Prompt";
 import PlaceEntry from "../../organisms/PlaceEntry"
-import { WEATHER_MAP_API_KEY } from "react-native-dotenv";
 import AddPlaceButton from "../../atoms/AddPlaceButton";
 import { styles } from "./styles"
 import { useLocalStorage } from "../../../customHooks";
+
+const api_key = "6c5dcdad7c41b67f6b171ea0ea2bbfc9"
 
 const CityListWrapper = () => {
   const [promptType, setPromptType] = useState(false)
@@ -31,7 +32,7 @@ const CityListWrapper = () => {
           }
           onSubmit={text =>
             {
-              fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${text}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
+              fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${text}&appid=${api_key}&lang=es`)
               .then((res) => res.json())
               .then((data) => {
                 if(data.length !== 0) {
