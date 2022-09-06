@@ -8,6 +8,8 @@ import { WEATHER_MAP_API_KEY }  from "react-native-dotenv"
 import { setCurrentInformation, setFutureInformation, setlocalPlace } from "../redux/placeSlice"
 import { getInformationParams } from "../types"
 
+const api_key = WEATHER_MAP_API_KEY // dotenv is not working as expected so this line fixes that
+
 export const useBackHome = () => {
   const navigate = useNavigate()
   useEffect(() => {
@@ -65,7 +67,7 @@ export const useGetCurrentinformationByIP = () => {
         .then((response) => response.json())
         .then((data) => {
           if (data.lat && data.lon) {
-            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.lat}&lon=${data.lon}&appid=${api_key}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
               if (data.name) {
@@ -98,11 +100,11 @@ export const useGetinformationByQueryParams = (params:getInformationParams) => {
   const [currentName, setCurrentName] = useState("")
   useEffect(() => {    
       if (place) {
-        fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${place.split(":")[1].split(",")[0]}&appid=${WEATHER_MAP_API_KEY}`) // for some case the params comes with a : at the start
+        fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${place.split(":")[1].split(",")[0]}&appid=${api_key}`) // for some case the params comes with a : at the start
         .then((response) => response.json())
         .then((data) => {
           if (params.type === "current" && data[0] !== undefined) {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${api_key}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
               if (data.city) {
@@ -118,7 +120,7 @@ export const useGetinformationByQueryParams = (params:getInformationParams) => {
               console.error(error);
             });
           } else if (params.type === "5days" && data[0] !== undefined) {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${WEATHER_MAP_API_KEY}&lang=es`)
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${data[0].lat}&lon=${data[0].lon}&appid=${api_key}&lang=es`)
             .then((response) => response.json())
             .then((data) => {
               if (data.list) {
